@@ -6,8 +6,11 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
     int stepcount=0;
+    [SerializeField]
+    int size;
 
     public bool iswall=false;
+    public bool isblock = false;
 
     TMPro.TextMeshPro tm;
     // Start is called before the first frame update
@@ -36,8 +39,18 @@ public class Cell : MonoBehaviour
     {
         iswall = i;
         tm.text = "■";
+        tm.fontSize = size;
         Debug.Log(tm.text);
         
+    }
+
+    public void block(bool i)
+    {
+        isblock = i;
+        tm.text = "■";
+        tm.fontSize = size;
+        Debug.Log(tm.text);
+
     }
 
     public void Placement(float i,float j)

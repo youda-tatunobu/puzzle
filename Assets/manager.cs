@@ -15,15 +15,11 @@ public class manager : MonoBehaviour
 
     int Annoying;
     int size;
-    int start;
-
+    int walk;
+    int start_i;
+    int start_j;
     // Start is called before the first frame update
-    void Start()
-    {
 
-
-
-    }
     void Awake()
     {
         size = Random.Range(6, 13);
@@ -106,20 +102,19 @@ public class manager : MonoBehaviour
                 if (tip[i, j].iswall == false)
                 {
                     
-                    if (tip[i - 1, j].iswall == true)
+                    if (tip[i - 1, j].isblock == true)
                         t = false;
-                    if (tip[i, j-1].iswall == true)
+                    if (tip[i, j-1].isblock == true)
                         t = false;
 
-                    if (tip[i+1, j].iswall == true)
+                    if (tip[i+1, j].isblock == true)
                         t = false;
-                    if (tip[i, j+1].iswall == true)
+                    if (tip[i, j+1].isblock == true)
                         t = false;
-                    
 
                     if (t == true)
                     {
-                        tip[i, j].wall(true);
+                        tip[i, j].block(true);
                         break;
                     }
 
@@ -129,31 +124,32 @@ public class manager : MonoBehaviour
             }
 
         }
-        test();
+        RandomWalk();
     }
 
-
-    void test()
+    void RandomWalk()
     {
+        walk = Random.Range(((size-2)^2)-Annoying, ((size - 2) ^ 3)-Annoying);
+        while(true)
+        {
+            start_i = Random.Range(1, (size - 2) ^ 2);
+            start_j = Random.Range(1, (size - 2) ^ 2);
+            if (tip[i, j].isblock == false)
+                break;
+        }
+        i = start_i;
+        j = start_j;
+        
 
-        //for (i = 0; i < size; i++)
-        //{
-        //   for (j = 0; j < size; j++)
-        //   {
-        //       
-        //           Debug.Log(tip[i, j].);
+        for (int f = 0; f < walk; f++)
+        {
+            while(true)
+            {
 
-        //  }
-        //  }
+            }
+
+        }
+
     }
 
-    /*
-     * for (i = 0; i< 5; i++)
-        {
-            for (j = 0; j< 5; j++)
-            {
-                tip[i][j] = Instantiate(masu, new Vector3(-3 + j, 3 - i, 0), Quaternion.identity);
-                
-            }
-        }*/
 }
