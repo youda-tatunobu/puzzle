@@ -11,6 +11,7 @@ public class Cell : MonoBehaviour
 
     public bool iswall=false;
     public bool isblock = false;
+    public bool isplayer = false;
 
     TMPro.TextMeshPro tm;
     // Start is called before the first frame update
@@ -51,6 +52,15 @@ public class Cell : MonoBehaviour
         tm.fontSize = size;
         Debug.Log(tm.text);
 
+    }
+    public void player(bool s)
+    {
+        isplayer = s;
+        var sp=transform.GetComponentInChildren<SpriteRenderer>();
+        if(isplayer==true)
+            sp.color =  Color.yellow;
+        if (isplayer == false)
+            sp.color = Color.clear;
     }
 
     public void Placement(float i,float j)

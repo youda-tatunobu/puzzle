@@ -12,6 +12,9 @@ public class manager : MonoBehaviour
     int j = 0;
 
     bool t = true;
+    [SerializeField]
+    int[] dirs = {0,1,2,3};
+    int dirCount = 4;
 
     int Annoying;
     int size;
@@ -51,8 +54,7 @@ public class manager : MonoBehaviour
 
             }
         }
-        Debug.Log(size);
-        Debug.Log(Annoying);
+        
         puzzle();
     }
 
@@ -61,23 +63,34 @@ public class manager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            i--;
-
+            
+            tip[i, j].player(false);
+            j++;
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            i++;
+            tip[i, j].player(false);
+            j--;
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            j++;
+            tip[i, j].player(false);
+            i++;
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            j--;
+            tip[i, j].player(false);
+            i--;
+        }
+        tip[i, j].player(true);
+
+        if (Input.GetMouseButton(1))
+        {
+            RandomWalk();
         }
     }
+
     void Initialization()
     {
         for (i = 0; i < set; i++)
@@ -132,24 +145,61 @@ public class manager : MonoBehaviour
         walk = Random.Range(((size-2)^2)-Annoying, ((size - 2) ^ 3)-Annoying);
         while(true)
         {
-            start_i = Random.Range(1, (size - 2) ^ 2);
-            start_j = Random.Range(1, (size - 2) ^ 2);
-            if (tip[i, j].isblock == false)
+            start_i = Random.Range(1, size-1);
+            start_j = Random.Range(1, size-1);
+            if (tip[start_i, start_j].isblock == false)
                 break;
+            
         }
+
         i = start_i;
         j = start_j;
-        
 
-        for (int f = 0; f < walk; f++)
+        tip[i, j].player(true);
+
+        return;
+
+        for (int f = 0; f < 1; f++)
         {
             while(true)
             {
+                for (int d = dirCount; d > 0; d--)
+                {
+                    var rand = Random.Range(0, d);
+
+                    for (int s = rand; s <= d - 2; s++)
+                    {
+                        //Debug.Log(s);
+
+                        dirs[s] = dirs[s + 1];
+                    }
+
+                    
+                }
+
+                switch(dirs[0])
+                {
+                    case 0:
+                        i++;
+                        break;
+                    case 1:
+                        j++;
+                        break;
+                    case 2:
+                        i--;
+                        break;
+                    case 3:
+                        j--;
+                        break;
+                }
 
             }
-
+            
         }
-
+        
     }
-
+    //Debug.Log(size);
+    //Debug.Log(Annoying);
+    //Debug.Log(dirs);
+    ///*//*/
 }
