@@ -10,7 +10,7 @@ public class Cell : MonoBehaviour
     int size;
 
     public bool iswall=false;
-    public bool isblock = false;
+    
     public bool isplayer = false;
 
     TMPro.TextMeshPro tm;
@@ -26,14 +26,12 @@ public class Cell : MonoBehaviour
         
     }
 
-    void Stepcutback()
-    {
 
-    }
-
-    void Steppush()
+    public void Countpush(int i)
     {
-        
+        stepcount+=i;
+        tm.text = ""+stepcount;
+
     }
 
     public void wall(bool i)
@@ -45,14 +43,7 @@ public class Cell : MonoBehaviour
         
     }
 
-    public void block(bool i)
-    {
-        isblock = i;
-        tm.text = "■";
-        tm.fontSize = size;
-        Debug.Log(tm.text);
-
-    }
+   
     public void player(bool s)
     {
         isplayer = s;
@@ -60,7 +51,7 @@ public class Cell : MonoBehaviour
         if(isplayer==true)
             sp.color =  Color.yellow;
         if (isplayer == false)
-            sp.color = Color.clear;
+            sp.color = Color.white;
     }
 
     public void Placement(float i,float j)
