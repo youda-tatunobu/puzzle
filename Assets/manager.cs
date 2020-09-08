@@ -115,8 +115,7 @@ public class manager : MonoBehaviour
                 i = Random.Range(1, size);
                 j = Random.Range(1, size);
 
-                if (tip[i, j].iswall == false)
-                {
+                
                     search();
                     for (int s = 0; s < 4; s++)
                     {
@@ -128,7 +127,6 @@ public class manager : MonoBehaviour
                         tip[i, j].wall(true);
                     }
 
-                }
 
                 ResetBool();
 
@@ -137,17 +135,20 @@ public class manager : MonoBehaviour
     }
     void search()
     {
-        if (tip[i , j+1].iswall == true)
-            t[0] = false;
+        if (tip[i, j].iswall == false)
+        {
+            if (tip[i, j + 1].iswall == true)
+                t[0] = false;
 
-        if (tip[i, j - 1].iswall == true)
-            t[1] = false;
+            if (tip[i, j - 1].iswall == true)
+                t[1] = false;
 
-        if (tip[i + 1, j].iswall == true)
-            t[2] = false;
+            if (tip[i + 1, j].iswall == true)
+                t[2] = false;
 
-        if (tip[i - 1, j].iswall == true)
-            t[3] = false;
+            if (tip[i - 1, j].iswall == true)
+                t[3] = false;
+        }
 
     }
     
@@ -159,8 +160,8 @@ public class manager : MonoBehaviour
     }
     void RandomWalk()
     {
-        Debug.Log(((size - 2)*(size - 2)));
-        walk = Random.Range((size - 2) ^ 2, (size - 2) ^ 3);
+        
+        walk = Random.Range((int)Mathf.Pow(size-2, 2), (int)Mathf.Pow(size - 2, 3));
         while(true)
         {
             start_i = Random.Range(1, size-1);
@@ -173,23 +174,25 @@ public class manager : MonoBehaviour
 
         i = start_i;
         j = start_j;
-        Debug.Log(walk);
 
         tip[i, j].player(true);
-        
 
+        Debug.Log(dirCount);
         for (int f = 0; f < walk; f++)
         {
             search();
             for (int s = 0; s <4; s++)
             {
+               
                 if (t[s] == false)
                 {
+                    
                     dirs[dirCount] = s;
                     dirCount++;
                 }
                     
             }
+            dirCount = 0;
             ResetBool();
 
             var dir = Random.Range(0, dirCount);
