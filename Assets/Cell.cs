@@ -31,15 +31,26 @@ public class Cell : MonoBehaviour
     {
         stepcount+=i;
         tm.text = ""+stepcount;
+        tm.fontSize = 6;
+        iswall = false;
 
     }
+
+    public void CheckZero()
+    {
+        if(stepcount==0)
+        {
+            wall(true);
+        }
+    }
+
 
     public void wall(bool i)
     {
         iswall = i;
         tm.text = "■";
         tm.fontSize = size;
-        Debug.Log(tm.text);
+        //Debug.Log(tm.text);
         
     }
 
@@ -48,10 +59,13 @@ public class Cell : MonoBehaviour
     {
         isplayer = s;
         var sp=transform.GetComponentInChildren<SpriteRenderer>();
-        if(isplayer==true)
-            sp.color =  Color.yellow;
+        if(isplayer == true)
+            sp.color =  Color.red;
+
         if (isplayer == false)
             sp.color = Color.white;
+        
+
     }
 
     public void Placement(float i,float j)
