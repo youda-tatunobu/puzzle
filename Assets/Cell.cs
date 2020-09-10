@@ -38,6 +38,7 @@ public class Cell : MonoBehaviour
 
     public void CheckZero()
     {
+        
         if(stepcount==0)
         {
             wall(true);
@@ -50,11 +51,17 @@ public class Cell : MonoBehaviour
         iswall = i;
         tm.text = "■";
         tm.fontSize = size;
-        //Debug.Log(tm.text);
         
+        //Debug.Log(tm.text);
+
     }
 
-   
+    public void Clear(string c)
+    {
+        tm.text = "" + c;
+        tm.fontSize = 6;
+    }
+
     public void player(bool s)
     {
         isplayer = s;
@@ -62,7 +69,7 @@ public class Cell : MonoBehaviour
         if(isplayer == true)
             sp.color =  Color.red;
 
-        if (isplayer == false)
+        else
             sp.color = Color.white;
         
 

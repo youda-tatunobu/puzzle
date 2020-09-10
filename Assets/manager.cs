@@ -3,39 +3,55 @@
 public class manager : MonoBehaviour
 {
     const int set = 12;
+
     [SerializeField]
     Cell masu;
 
-    Cell[,] tip = new Cell[set, set];
-
     [SerializeField]
     Vector2[] undo = new Vector2[180];
-    int undoCount = 0;
-    int i = 0;
-    int j = 0;
-
-    bool[] t =new bool[4];
-    bool startfrg;
 
     [SerializeField]
-    int[] dirs = {0,0,0,0};
-    int dirCount = 0;
     int clear = 0;
 
-
-    int Annoying;
-    int size;
+    [SerializeField]
     int walk;
+
+    [SerializeField]
+    int undoCount = 0;
+
+    Cell[,] tip = new Cell[set, set];
+
+    string cl = "c,l,e,a,r,!";
+    string[] part;
+
+    bool[] t = new bool[4];
+    bool startfrg;
+
+    int[] dirs = { 0, 0, 0, 0 };
+
+    int i = 0;
+    int j = 0;
     int start_i;
     int start_j;
+
+    int hoge = 6;
+    int dirCount = 0;
+    int Annoying = 0;
+    int size = 0;
+
+
+
+
     // Start is called before the first frame update
 
     void Awake()
     {
+        part = cl.Split(',');
         startfrg = false;
         size = Random.Range(6, 13);
-        Annoying = Random.Range(size-6, size-4);
-        
+
+        Annoying = Random.Range(size - 6, size - 4);
+
         for (i = 0; i < size; i++)
         {
             for (j = 0; j < size; j++)
@@ -62,16 +78,39 @@ public class manager : MonoBehaviour
 
             }
         }
-        
+
         puzzle();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(startfrg==false)
+        if (startfrg == false)
         {
             return;
+        }
+
+        if (clear != 0)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Redo();
+            }
+        }
+
+        if (clear == walk)
+        {
+            tip[i, j].player(false);
+            tip[i, j].wall(true);
+            i = (size / 2) - 3;
+            j = size / 2;
+            
+            
+            for (int s = 0; s < hoge; s++)
+            {
+                tip[i, j].Clear(part[s]);
+                i++;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -93,44 +132,42 @@ public class manager : MonoBehaviour
         {
             move(-1, 0);
         }
-        Debug.Log("a");
-        tip[i, j].player(true);
 
-        if(clear<0)
-        {
-            return;
-        }
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Redo();
-        }
 
     }
-    void move(int seti,int setj)
-    {
-        tip[i, j].CheckZero();
 
-        if (seti==0)
+    void move(int seti, int setj)
+    {
+
+
+        undo[undoCount] = new Vector2(i, j);
+
+
+        if (seti == 0)
         {
             if (tip[i, j + setj].iswall == true)
                 return;
-
-            tip[i,j].player(false);
-            j+=setj;
+            tip[i, j].player(false);
+            j += setj;
             tip[i, j].Countpush(-1);
 
-            
+
         }
         else
         {
-            if (tip[i+seti, j ].iswall == true)
+            if (tip[i + seti, j].iswall == true)
                 return;
-            tip[i,j].player(false);
-            i+=seti;
+
+            tip[i, j].player(false);
+            i += seti;
             tip[i, j].Countpush(-1);
         }
-        undo[undoCount] = new Vector2(i, j);
+
+        tip[(int)undo[undoCount].x, (int)undo[undoCount].y].CheckZero();
+        tip[i, j].player(true);
+
+
         undoCount++;
         clear++;
     }
@@ -140,11 +177,12 @@ public class manager : MonoBehaviour
         tip[i, j].player(false);
         tip[i, j].Countpush(1);
 
+
         i = (int)undo[undoCount].x;
         j = (int)undo[undoCount].y;
 
         tip[i, j].player(true);
-        
+        tip[i, j].Countpush(0);
 
         clear--;
     }
@@ -165,13 +203,13 @@ public class manager : MonoBehaviour
 
         for (int f = 0; f < Annoying; f++)
         {
-            
-                i = Random.Range(1, size);
-                j = Random.Range(1, size);
+
+            i = Random.Range(1, size);
+            j = Random.Range(1, size);
 
             if (tip[i, j].iswall == false)
             {
-                Debug.Log("A");
+
                 search();
                 for (int s = 0; s < 4; s++)
                 {
@@ -184,29 +222,29 @@ public class manager : MonoBehaviour
                 }
             }
 
-                ResetBool();
+            ResetBool();
 
         }
         RandomWalk();
     }
     void search()
     {
-        
-            if (tip[i, j + 1].iswall == true)
-                t[0] = true;
 
-            if (tip[i, j - 1].iswall == true)
-                t[1] = true;
+        if (tip[i, j + 1].iswall == true)
+            t[0] = true;
 
-            if (tip[i + 1, j].iswall == true)
-                t[2] = true;
+        if (tip[i, j - 1].iswall == true)
+            t[1] = true;
 
-            if (tip[i - 1, j].iswall == true)
-                t[3] = true;
-        
+        if (tip[i + 1, j].iswall == true)
+            t[2] = true;
+
+        if (tip[i - 1, j].iswall == true)
+            t[3] = true;
+
 
     }
-    
+
     void ResetBool()
     {
         for (int s = 0; s < 4; s++)
@@ -215,70 +253,79 @@ public class manager : MonoBehaviour
     }
     void RandomWalk()
     {
-        
-        walk = Random.Range((int)Mathf.Pow(size-2, 2), (int)Mathf.Pow(size - 2, 3)/(size/2));
-        
-        while(true)
+
+        walk = Random.Range((int)Mathf.Pow(size - 2, 2), (int)Mathf.Pow(size - 2, 3) / (size / 2));
+
+        while (true)
         {
-            start_i = Random.Range(1, size-1);
-            start_j = Random.Range(1, size-1);
+            start_i = Random.Range(1, size - 1);
+            start_j = Random.Range(1, size - 1);
 
             if (tip[start_i, start_j].iswall == false)
                 break;
-            
+
         }
 
         i = start_i;
         j = start_j;
 
-        
 
-        
+
+
         for (int f = 0; f < walk; f++)
         {
-            Debug.Log("B");
+
 
             search();
-            for (int s = 0; s <4; s++)
+            for (int s = 0; s < 4; s++)
             {
-                Debug.Log(s);
+
                 if (t[s] == false)
                 {
-                    
+
                     dirs[dirCount] = s;
                     dirCount++;
                 }
-                    
+
             }
-            
+
             ResetBool();
-            
+
 
             var dir = Random.Range(0, dirCount);
-            Debug.Log(dir+" "+dirCount);
+            //Debug.Log(i + "," + j + "," + dirs[dir]);
             switch (dirs[dir])
             {
                 case 0:
-                    j++;
-                    tip[i, j].Countpush(1);
 
+                    tip[i, j].Countpush(1);
+                    j++;
                     break;
                 case 1:
-                    j--;
+
                     tip[i, j].Countpush(1);
+                    j--;
                     break;
                 case 2:
-                    i++;
+
                     tip[i, j].Countpush(1);
+                    i++;
                     break;
                 case 3:
-                    i--;
+
                     tip[i, j].Countpush(1);
+                    i--;
                     break;
             }
             dirCount = 0;
         }
+
+        undo[undoCount] = new Vector2(i, j);
+        undoCount++;
+
         wall();
+        tip[i, j].player(true);
+        tip[i, j].Countpush(0);
         startfrg = true;
     }
 
@@ -292,46 +339,10 @@ public class manager : MonoBehaviour
             }
         }
     }
+    ///
     //Debug.Log(size);
     //Debug.Log(Annoying);
     //Debug.Log(dirs);
     ///*//*/
     ///
-    /*
-    while(true)
-            {
-                for (int d = dirCount; d > 0; d--)
-                {
-                    var rand = Random.Range(0, d);
-                    
-
-                    for (int s = rand; s <= d - 2; s++)
-                    {
-                        //Debug.Log(s);
-                        if(tip[])
-                        dirs[s] = dirs[s + 1];
-}
-
-                    
-                }
-
-                switch(dirs[0])
-                {
-                    case 0:
-                        i++;
-                        break;
-                    case 1:
-                        j++;
-                        break;
-                    case 2:
-                        i--;
-                        break;
-                    case 3:
-                        j--;
-                        break;
-                }
-
-            }
-            
-        }*/
 }
