@@ -77,7 +77,7 @@ public class Cell : MonoBehaviour
 
     public void Placement(float i,float j)
     {
-        transform.position = new Vector2(i, j);
+        transform.localPosition = new Vector2(i, j);
     }
 
     public void Pull(int set)

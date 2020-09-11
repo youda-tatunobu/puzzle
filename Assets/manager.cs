@@ -8,6 +8,9 @@ public class manager : MonoBehaviour
     Cell masu;
 
     [SerializeField]
+    GameObject gameObject;
+
+    [SerializeField]
     Vector2[] undo = new Vector2[180];
 
     [SerializeField]
@@ -38,6 +41,8 @@ public class manager : MonoBehaviour
     int dirCount = 0;
     int Annoying = 0;
     int size = 0;
+
+    float countup = 0.0f;
 
 
 
@@ -71,17 +76,16 @@ public class manager : MonoBehaviour
                     tip[i, j].wall(true);
 
                 if (size % 2 == 1)
-                    tip[i, j].Placement(i - (size / 2), j - (size / 2));
+                    tip[i, j].Placement(i - (size / 2)+2, j - (size / 2));
 
                 if (size % 2 == 0)
-                    tip[i, j].Placement(i - (size / 2) + (float)0.5, j - (size / 2) + (float)0.5);
+                    tip[i, j].Placement(i - (size / 2)+2 + (float)0.5, j - (size / 2) + (float)0.5);
 
             }
         }
 
         puzzle();
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -89,6 +93,7 @@ public class manager : MonoBehaviour
         {
             return;
         }
+        
 
         if (clear != 0)
         {
