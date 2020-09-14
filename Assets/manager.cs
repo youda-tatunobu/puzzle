@@ -8,9 +8,6 @@ public class manager : MonoBehaviour
     Cell masu;
 
     [SerializeField]
-    GameObject gameObject;
-
-    [SerializeField]
     Vector2[] undo = new Vector2[180];
 
     [SerializeField]
@@ -21,6 +18,9 @@ public class manager : MonoBehaviour
 
     [SerializeField]
     int undoCount = 0;
+
+    [SerializeField]
+    int UIsize;
 
     Cell[,] tip = new Cell[set, set];
 
@@ -41,6 +41,7 @@ public class manager : MonoBehaviour
     int dirCount = 0;
     int Annoying = 0;
     int size = 0;
+    
 
     float countup = 0.0f;
 
@@ -53,9 +54,9 @@ public class manager : MonoBehaviour
     {
         part = cl.Split(',');
         startfrg = false;
-        size = Random.Range(6, 13);
-
-        Annoying = Random.Range(size - 6, size - 4);
+        size = Random.Range(6, 12);
+        size = 11;
+        Annoying = Random.Range(size - 4, size - 2);
 
         for (i = 0; i < size; i++)
         {
@@ -63,6 +64,9 @@ public class manager : MonoBehaviour
             {
 
                 tip[i, j] = Instantiate(masu);
+                tip[i, j].transform.SetParent(transform);
+
+
 
                 if (i == 0)
                     tip[i, j].wall(true);
@@ -76,10 +80,10 @@ public class manager : MonoBehaviour
                     tip[i, j].wall(true);
 
                 if (size % 2 == 1)
-                    tip[i, j].Placement(i - (size / 2)+2, j - (size / 2));
+                    tip[i, j].Placement(i * UIsize - (size * UIsize / 2) + 2 * UIsize, j * UIsize - (size * UIsize / 2) + UIsize/2);
 
                 if (size % 2 == 0)
-                    tip[i, j].Placement(i - (size / 2)+2 + (float)0.5, j - (size / 2) + (float)0.5);
+                    tip[i, j].Placement(i * UIsize - (size * UIsize / 2) + 2 * UIsize + 24, j * UIsize - (size * UIsize / 2) + UIsize/2);
 
             }
         }
@@ -89,6 +93,10 @@ public class manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(clear>walk)
+        {
+            return;
+        }
         if (startfrg == false)
         {
             return;
@@ -107,8 +115,8 @@ public class manager : MonoBehaviour
         {
             tip[i, j].player(false);
             tip[i, j].wall(true);
-            i = (size / 2) - 3;
-            j = size / 2;
+            i = (size  / 2) - 3;
+            j = (size  / 2);
             
             
             for (int s = 0; s < hoge; s++)
@@ -116,6 +124,7 @@ public class manager : MonoBehaviour
                 tip[i, j].Clear(part[s]);
                 i++;
             }
+            clear++;
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))

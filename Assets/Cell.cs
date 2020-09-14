@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Cell : MonoBehaviour
 {
@@ -13,11 +14,13 @@ public class Cell : MonoBehaviour
     
     public bool isplayer = false;
 
-    TMPro.TextMeshPro tm;
+    TMPro.TextMeshProUGUI tm;
+    Image im;
     // Start is called before the first frame update
     private void Awake()
     {
-        tm = GetComponent<TMPro.TextMeshPro>();
+        tm = GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        im = transform.GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -31,7 +34,7 @@ public class Cell : MonoBehaviour
     {
         stepcount+=i;
         tm.text = ""+stepcount;
-        tm.fontSize = 6;
+        tm.fontSize = 32;
         iswall = false;
 
     }
@@ -52,6 +55,8 @@ public class Cell : MonoBehaviour
         tm.text = "■";
         tm.fontSize = size;
         
+        
+        
         //Debug.Log(tm.text);
 
     }
@@ -59,18 +64,18 @@ public class Cell : MonoBehaviour
     public void Clear(string c)
     {
         tm.text = "" + c;
-        tm.fontSize = 6;
+        tm.fontSize = 32;
     }
 
     public void player(bool s)
     {
         isplayer = s;
-        var sp=transform.GetComponentInChildren<SpriteRenderer>();
+        
         if(isplayer == true)
-            sp.color =  Color.red;
+            im.color =  Color.red;
 
         else
-            sp.color = Color.white;
+            im.color = Color.white;
         
 
     }
