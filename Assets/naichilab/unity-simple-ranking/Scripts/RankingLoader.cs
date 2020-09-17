@@ -79,7 +79,6 @@ namespace naichilab
             var board = RankingBoards.GetRankingInfo(boardId);
             var sc = new NumberScore(score, board.CustomFormat);
             SendScoreAndShowRanking(sc, board);
-            Debug.Log(score);
         }
 
         private void SendScoreAndShowRanking(IScore score, RankingInfo board)

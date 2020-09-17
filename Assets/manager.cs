@@ -11,14 +11,13 @@ public class manager : MonoBehaviour
     Vector2[] undo = new Vector2[180];
 
     [SerializeField]
-    int undoCount = 0;
-
-
-    [SerializeField]
     int clear = 0;
 
     [SerializeField]
     int walk;
+
+    [SerializeField]
+    int undoCount = 0;
 
     [SerializeField]
     int UIsize;
@@ -161,7 +160,6 @@ public class manager : MonoBehaviour
             tip[i, j].Clear(part[s]);
             i++;
         }
-        
         clear++;
     }
 
