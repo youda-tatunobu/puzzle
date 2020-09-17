@@ -27,8 +27,10 @@ public class TimeManager : MonoBehaviour
     
     int[] s = { 600,60,10,1};
 
+    bool clear = false;
+
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         for (int hoge = 0; hoge < 4; hoge++)
         {
@@ -42,8 +44,13 @@ public class TimeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(clear==true)
+        {
+            return;
+        }
         countup += Time.deltaTime;
         place[0] = (int)countup / s[0];
+        time[0].display(place[0]);
 
         for (int i = 1; i < 4; i++)
         {
@@ -51,19 +58,30 @@ public class TimeManager : MonoBehaviour
             {
                 placeX -= place[j] * s[j];
                 //Debug.Log("j="+j+","+"i="+i);
+                Debug.Log(j);
             
             }
-            Debug.Log(((int)countup - placeX)+","+s[i]);
-            place[i] = ((int)countup - placeX) / s[i];
+            place[i] = ((int)countup + placeX) / s[i];
+            time[i].display(place[i]);
 
             placeX = 0;
         }
 
+    }
 
+    public void TimeStart()
+    {
+        clear = false;
+    }
 
-
-
-
+    public void TimerStop()
+    {
+        countup = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            place[i] = 0;
+        }
+            clear = true;
     }
 }
 /*

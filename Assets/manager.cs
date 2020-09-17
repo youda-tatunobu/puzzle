@@ -52,10 +52,14 @@ public class manager : MonoBehaviour
 
     void Awake()
     {
+
+        
+
+
         part = cl.Split(',');
         startfrg = false;
         size = Random.Range(6, 12);
-        size = 11;
+        size = 6;
         Annoying = Random.Range(size - 4, size - 2);
 
         for (i = 0; i < size; i++)
@@ -113,18 +117,7 @@ public class manager : MonoBehaviour
 
         if (clear == walk)
         {
-            tip[i, j].player(false);
-            tip[i, j].wall(true);
-            i = (size  / 2) - 3;
-            j = (size  / 2);
-            
-            
-            for (int s = 0; s < hoge; s++)
-            {
-                tip[i, j].Clear(part[s]);
-                i++;
-            }
-            clear++;
+            Clear();
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -149,6 +142,25 @@ public class manager : MonoBehaviour
 
 
 
+    }
+
+    void Clear()
+    {
+        var pe = GetComponentInParent<TimeManager>();
+        pe.TimerStop();
+
+        tip[i, j].player(false);
+        tip[i, j].wall(true);
+        i = (size / 2) - 3;
+        j = (size / 2) + 1;
+
+
+        for (int s = 0; s < hoge; s++)
+        {
+            tip[i, j].Clear(part[s]);
+            i++;
+        }
+        clear++;
     }
 
     void move(int seti, int setj)
