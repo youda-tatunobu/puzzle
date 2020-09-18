@@ -20,6 +20,7 @@ public class manager : MonoBehaviour
     int undoCount = 0;
 
     Cell[,] tip = new Cell[set, set];
+    Vector3 sc = new Vector3(1, 1, 1);
 
     string cl = "c,l,e,a,r,!";
     string[] part;
@@ -38,6 +39,12 @@ public class manager : MonoBehaviour
     int dirCount = 0;
     int Annoying = 0;
     int size = 0;
+<<<<<<< Updated upstream
+=======
+    
+
+    //float countup = 0.0f;
+>>>>>>> Stashed changes
 
 
 
@@ -48,9 +55,15 @@ public class manager : MonoBehaviour
     {
         part = cl.Split(',');
         startfrg = false;
+<<<<<<< Updated upstream
         size = Random.Range(6, 13);
 
         Annoying = Random.Range(size - 6, size - 4);
+=======
+        size = Random.Range(6, 12);
+        size = 6;
+        Annoying = Random.Range(size - 4, size - 2);
+>>>>>>> Stashed changes
 
         for (i = 0; i < size; i++)
         {
@@ -58,6 +71,13 @@ public class manager : MonoBehaviour
             {
 
                 tip[i, j] = Instantiate(masu);
+<<<<<<< Updated upstream
+=======
+                tip[i, j].transform.localScale = sc;
+                tip[i, j].transform.SetParent(transform);
+
+
+>>>>>>> Stashed changes
 
                 if (i == 0)
                     tip[i, j].wall(true);
@@ -100,6 +120,7 @@ public class manager : MonoBehaviour
 
         if (clear == walk)
         {
+            var cl = GetComponentInParent<TimeManager>();
             tip[i, j].player(false);
             tip[i, j].wall(true);
             i = (size / 2) - 3;
@@ -111,6 +132,11 @@ public class manager : MonoBehaviour
                 tip[i, j].Clear(part[s]);
                 i++;
             }
+<<<<<<< Updated upstream
+=======
+            clear++;
+            cl.TimeStop();
+>>>>>>> Stashed changes
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
