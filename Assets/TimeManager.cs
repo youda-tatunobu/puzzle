@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TimeManager : MonoBehaviour
 {
@@ -9,29 +10,29 @@ public class TimeManager : MonoBehaviour
     float countup = 0.0f;
     [SerializeField]
     Timer[] time = new Timer[4];
-    [SerializeField]
-    int thousand_place;
 
-    [SerializeField]
-    int hundreds_place=0;
-
-    [SerializeField]
-    int tens_place=0;
-
-    [SerializeField]
-    int ones_place=0;
-
-    [SerializeField]
-    int[] place = new int[4];
+    
+    
     int placeX;
     
     int[] s = { 600,60,10,1};
+    [SerializeField]
+    int minute;
+    [SerializeField]
+    int second;
+
+    DateTime date1 = new DateTime(0000, 00, 00, 00, 00, 00);
+
+    string[] place;
 
     bool clear = false;
 
     // Start is called before the first frame update
     private void Awake()
     {
+        
+        
+
         for (int hoge = 0; hoge < 4; hoge++)
         {
             
@@ -44,11 +45,58 @@ public class TimeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(clear==true)
+        
+        if (clear==true)
         {
             return;
         }
-        countup += Time.deltaTime;
+        
+        DateTime now = DateTime.Now;
+        minute = now.Minute;
+        second = now.Second;
+
+        var mi = minute.ToString();
+        place = mi.Split();
+        for (int i=0;i<2;i++)
+        {
+            time[i].display(place[i]);
+        }
+
+        var se = second.ToString();
+        place = mi.Split();
+        for (int i = 2; i < 4; i++)
+        {
+            time[i].display(place[i]);
+        }
+
+
+
+
+    }
+
+    public void TimeStart()
+    {
+        clear = false;
+    }
+
+    public void TimerStop()
+    {
+
+        countup = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            place[i] = null;
+        }
+            clear = true;
+    }
+}
+/*
+ thousand_place= (int)countup / 600;
+        hundreds_place = (int)(countup-(thousand_place * 600)) / 60;
+        tens_place = (int)(countup - (thousand_place * 600)-hundreds_place*60) / 10;
+        ones_place= (int)countup- (thousand_place * 600)-(hundreds_place * 60)- (tens_place * 10);
+
+ countup += Time.deltaTime;
         place[0] = (int)countup / s[0];
         time[0].display(place[0]);
 
@@ -66,27 +114,6 @@ public class TimeManager : MonoBehaviour
 
             placeX = 0;
         }
-
-    }
-
-    public void TimeStart()
-    {
-        clear = false;
-    }
-
-    public void TimerStop()
-    {
-        countup = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            place[i] = 0;
-        }
-            clear = true;
-    }
-}
-/*
- thousand_place= (int)countup / 600;
-        hundreds_place = (int)(countup-(thousand_place * 600)) / 60;
-        tens_place = (int)(countup - (thousand_place * 600)-hundreds_place*60) / 10;
-        ones_place= (int)countup- (thousand_place * 600)-(hundreds_place * 60)- (tens_place * 10);
+ 
+ 
  */
