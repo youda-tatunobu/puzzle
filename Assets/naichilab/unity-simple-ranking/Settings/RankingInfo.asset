@@ -16,4 +16,4 @@ MonoBehaviour:
   ClassName: HiScore
   Type: 1
   Order: 0
-  CustomFormat: mm,mm
+  CustomFormat: mm:ss

@@ -16,9 +16,9 @@ public class TimeManager : MonoBehaviour
     int placeX;
     
     int[] s = { 600,60,10,1};
-  
 
-    string[] place;
+
+    int[] place = new int[4];
 
     bool clear = false;
 
@@ -45,10 +45,25 @@ public class TimeManager : MonoBehaviour
         {
             return;
         }
-        
 
+        countup += Time.deltaTime;
+        place[0] = (int)countup / s[0];
+        time[0].display(place[0]);
 
+        for (int i = 1; i < 4; i++)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                placeX -= place[j] * s[j];
+                //Debug.Log("j="+j+","+"i="+i);
+                Debug.Log(j);
 
+            }
+            place[i] = ((int)countup + placeX) / s[i];
+            time[i].display(place[i]);
+
+            placeX = 0;
+        }
 
 
     }
@@ -61,10 +76,14 @@ public class TimeManager : MonoBehaviour
     public void TimerStop()
     {
 
+        var timeScore = new System.TimeSpan(0, 0, place[0]*10+place[1], place[2] * 10 + place[3], 0);
+        Debug.Log(timeScore);
+        naichilab.RankingLoader.Instance.SendScoreAndShowRanking(timeScore);
+
         countup = 0;
         for (int i = 0; i < 4; i++)
         {
-            place[i] = null;
+            place[i] = 0;
         }
             clear = true;
     }

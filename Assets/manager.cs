@@ -2,7 +2,7 @@
 
 public class manager : MonoBehaviour
 {
-    const int set = 12;
+    const int set = 16;
 
     [SerializeField]
     Cell masu;
@@ -23,6 +23,7 @@ public class manager : MonoBehaviour
     [SerializeField]
     int UIsize;
 
+    Cell[,] background = new Cell[set, set];
     Cell[,] tip = new Cell[set, set];
 
     string cl = "c,l,e,a,r,!";
@@ -35,6 +36,9 @@ public class manager : MonoBehaviour
 
     int i = 0;
     int j = 0;
+    int Basics_i;
+    int Basics_j;
+    int Basics;
     int start_i;
     int start_j;
 
@@ -42,11 +46,6 @@ public class manager : MonoBehaviour
     int dirCount = 0;
     int Annoying = 0;
     int size = 0;
-    
-
-    float countup = 0.0f;
-
-
 
 
     // Start is called before the first frame update
@@ -54,42 +53,40 @@ public class manager : MonoBehaviour
     void Awake()
     {
 
-        
-
 
         part = cl.Split(',');
         startfrg = false;
-        size = Random.Range(6, 12);
-        size = 6;
+        size = Random.Range(4, 10);
+        size = 8;
         Annoying = Random.Range(size - 4, size - 2);
+        Basics = ((set - size) / 2);
 
-        for (i = 0; i < size; i++)
+        for (i = 0; i < set; i++)
         {
-            for (j = 0; j < size; j++)
+            for (j = 0; j < set; j++)
             {
-
                 tip[i, j] = Instantiate(masu);
                 tip[i, j].transform.SetParent(transform);
 
-
-
-                if (i == 0)
+                
+                if(i<Basics||j<Basics
+                 ||i>=Basics+size||j>=Basics+size)
+                {
                     tip[i, j].wall(true);
-                if (j == 0)
-                    tip[i, j].wall(true);
+                }
 
-                if (i == size - 1)
-                    tip[i, j].wall(true);
 
-                if (j == size - 1)
-                    tip[i, j].wall(true);
+                tip[i, j].Placement(i * UIsize - (set * UIsize / 2) + 2 * UIsize, j * UIsize - (set * UIsize / 2) + UIsize / 2);
 
+                /*
                 if (size % 2 == 1)
-                    tip[i, j].Placement(i * UIsize - (size * UIsize / 2) + 2 * UIsize, j * UIsize - (size * UIsize / 2) + UIsize/2);
+                     
+                    || i < Basics_i + size
+                    || j < Basics_j + size)
 
                 if (size % 2 == 0)
-                    tip[i, j].Placement(i * UIsize - (size * UIsize / 2) + 2 * UIsize + 24, j * UIsize - (size * UIsize / 2) + UIsize/2);
-
+                    tip[i, j].Placement(i * UIsize - (set * UIsize / 2) + 2 * UIsize + 24, j * UIsize - (set * UIsize / 2) + UIsize/2);
+                */
             }
         }
 
@@ -232,8 +229,8 @@ public class manager : MonoBehaviour
         for (int f = 0; f < Annoying; f++)
         {
 
-            i = Random.Range(1, size);
-            j = Random.Range(1, size);
+            i = Random.Range(Basics, Basics + size);
+            j = Random.Range(Basics, Basics + size);
 
             if (tip[i, j].iswall == false)
             {
@@ -281,13 +278,13 @@ public class manager : MonoBehaviour
     }
     void RandomWalk()
     {
-
+        
         walk = Random.Range((int)Mathf.Pow(size - 2, 2), (int)Mathf.Pow(size - 2, 3) / (size / 2));
 
         while (true)
         {
-            start_i = Random.Range(1, size - 1);
-            start_j = Random.Range(1, size - 1);
+            start_i = Random.Range(Basics, Basics + size - 1);
+            start_j = Random.Range(Basics, Basics + size - 1);
 
             if (tip[start_i, start_j].iswall == false)
                 break;

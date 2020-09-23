@@ -16,8 +16,8 @@ public class Timer : MonoBehaviour
     {
         
     }
-    public void display(string di)
+    public void display(int di)
     {
-        tm.text = di;
+        tm.text = (""+di);
     }
 }

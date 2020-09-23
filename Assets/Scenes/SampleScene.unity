@@ -1552,9 +1552,9 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
+  undoCount: 0
   clear: 0
   walk: 0
-  undoCount: 0
   UIsize: 48
 --- !u!4 &828874473
 Transform:
@@ -1718,11 +1718,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  thousand_place: 0
-  hundreds_place: 0
-  tens_place: 0
-  ones_place: 0
-  place: 00000000000000000000000000000000
 --- !u!222 &1046086018
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1886,7 +1881,7 @@ PrefabInstance:
     - target: {fileID: 518667768689476213, guid: b340878e0ccf5d04198b5d5df011cbfc,
         type: 3}
       propertyPath: m_text
-      value: E
+      value: M
       objectReference: {fileID: 0}
     - target: {fileID: 518667768689476213, guid: b340878e0ccf5d04198b5d5df011cbfc,
         type: 3}
@@ -2522,7 +2517,7 @@ PrefabInstance:
     - target: {fileID: 518667768689476213, guid: b340878e0ccf5d04198b5d5df011cbfc,
         type: 3}
       propertyPath: m_text
-      value: M
+      value: E
       objectReference: {fileID: 0}
     - target: {fileID: 518667768689476213, guid: b340878e0ccf5d04198b5d5df011cbfc,
         type: 3}
