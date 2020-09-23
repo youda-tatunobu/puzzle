@@ -16,12 +16,7 @@ public class TimeManager : MonoBehaviour
     int placeX;
     
     int[] s = { 600,60,10,1};
-    [SerializeField]
-    int minute;
-    [SerializeField]
-    int second;
-
-    DateTime date1 = new DateTime(0000, 00, 00, 00, 00, 00);
+  
 
     string[] place;
 
@@ -51,23 +46,7 @@ public class TimeManager : MonoBehaviour
             return;
         }
         
-        DateTime now = DateTime.Now;
-        minute = now.Minute;
-        second = now.Second;
 
-        var mi = minute.ToString();
-        place = mi.Split();
-        for (int i=0;i<2;i++)
-        {
-            time[i].display(place[i]);
-        }
-
-        var se = second.ToString();
-        place = mi.Split();
-        for (int i = 2; i < 4; i++)
-        {
-            time[i].display(place[i]);
-        }
 
 
 
