@@ -149,8 +149,8 @@ public class manager : MonoBehaviour
 
         tip[i, j].player(false);
         tip[i, j].wall(true);
-        i = (size / 2) - 3;
-        j = (size / 2) + 1;
+        i = 11;
+        j = 5;
 
 
         for (int s = 0; s < hoge; s++)
@@ -356,9 +356,9 @@ public class manager : MonoBehaviour
 
     void wall()
     {
-        for (int s = 0; s < size; s++)
+        for (int s = Basics; s < Basics+size; s++)
         {
-            for (int c = 0; c < size; c++)
+            for (int c = Basics; c < Basics+size; c++)
             {
                 tip[s, c].CheckZero();
             }

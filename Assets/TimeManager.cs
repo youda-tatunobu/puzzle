@@ -55,8 +55,6 @@ public class TimeManager : MonoBehaviour
             for (int j = 0; j < i; j++)
             {
                 placeX -= place[j] * s[j];
-                //Debug.Log("j="+j+","+"i="+i);
-                Debug.Log(j);
 
             }
             place[i] = ((int)countup + placeX) / s[i];
@@ -77,7 +75,7 @@ public class TimeManager : MonoBehaviour
     {
 
         var timeScore = new System.TimeSpan(0, 0, place[0]*10+place[1], place[2] * 10 + place[3], 0);
-        Debug.Log(timeScore);
+       
         naichilab.RankingLoader.Instance.SendScoreAndShowRanking(timeScore);
 
         countup = 0;
