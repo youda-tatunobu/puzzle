@@ -29,10 +29,10 @@ public class Cell : MonoBehaviour
         
     }
 
-    public void debag(float i)
+    public void debug(float i)
     {
     
-        tm.text = "" + i;
+        tm.text = "" + i*10;
         tm.fontSize = 32;
         iswall = false;
     }
