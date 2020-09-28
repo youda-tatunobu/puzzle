@@ -162,10 +162,7 @@ public class manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(clear>walk)
-        {
-            return;
-        }
+
         if (startfrg == false)
         {
             return;
@@ -216,8 +213,8 @@ public class manager : MonoBehaviour
 
         tip[i, j].player(false);
         tip[i, j].wall(true);
-        i = 11;
-        j = 5;
+        i = 5;
+        j = 11;
 
 
         for (int s = 0; s < hoge; s++)
@@ -226,7 +223,7 @@ public class manager : MonoBehaviour
             i++;
         }
         
-        clear++;
+        clear=1000;
     }
 
     void move(int MaxTipi, int MaxTipj)
