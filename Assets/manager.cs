@@ -2,7 +2,7 @@
 
 public class manager : MonoBehaviour
 {
-    const int set = 16;
+    const int MaxTip = 16;
 
     [SerializeField]
     Cell masu;
@@ -23,8 +23,12 @@ public class manager : MonoBehaviour
     [SerializeField]
     int UIsize;
 
-    Cell[,] background = new Cell[set, set];
-    Cell[,] tip = new Cell[set, set];
+    [SerializeField]
+    float[,] rate = new float[MaxTip, MaxTip];
+
+    Cell[,] background = new Cell[MaxTip, MaxTip];
+    Cell[,] tip = new Cell[MaxTip, MaxTip];
+
 
     string cl = "c,l,e,a,r,!";
     string[] part;
@@ -33,6 +37,8 @@ public class manager : MonoBehaviour
     bool startfrg;
 
     int[] dirs = { 0, 0, 0, 0 };
+
+    int pattern = 0;
 
     int i = 0;
     int j = 0;
@@ -55,28 +61,36 @@ public class manager : MonoBehaviour
 
 
         part = cl.Split(',');
-        startfrg = false;
-        size = Random.Range(4, 10);
-        size = 8;
-        Annoying = Random.Range(size - 4, size - 2);
-        Basics = ((set - size) / 2);
 
-        for (i = 0; i < set; i++)
+        startfrg = false;
+
+        size = Random.Range(4, 10);
+        pattern= Random.Range(1, 4);
+        Annoying = Random.Range(size - 4, size - 2);
+        Basics = ((MaxTip - size) / 2);
+
+        for (i = 0; i < MaxTip; i++)
         {
-            for (j = 0; j < set; j++)
+            for (j = 0; j < MaxTip; j++)
             {
                 tip[i, j] = Instantiate(masu);
                 tip[i, j].transform.SetParent(transform);
 
                 
-                if(i<Basics||j<Basics
-                 ||i>=Basics+size||j>=Basics+size)
-                {
+                if(    i < Basics
+                    || j < Basics
+                    || i >= Basics + size
+                    || j >= Basics + size )
+                { 
                     tip[i, j].wall(true);
+                }
+                else
+                {
+                    DecideRate();
                 }
 
 
-                tip[i, j].Placement(i * UIsize - (set * UIsize / 2) + 2 * UIsize, j * UIsize - (set * UIsize / 2) + UIsize / 2);
+                tip[i, j].Placement(i * UIsize - (MaxTip * UIsize / 2) + 2 * UIsize, j * UIsize - (MaxTip * UIsize / 2) + UIsize / 2);
 
                 /*
                 if (size % 2 == 1)
@@ -85,13 +99,66 @@ public class manager : MonoBehaviour
                     || j < Basics_j + size)
 
                 if (size % 2 == 0)
-                    tip[i, j].Placement(i * UIsize - (set * UIsize / 2) + 2 * UIsize + 24, j * UIsize - (set * UIsize / 2) + UIsize/2);
+                    tip[i, j].Placement(i * UIsize - (MaxTip * UIsize / 2) + 2 * UIsize + 24, j * UIsize - (MaxTip * UIsize / 2) + UIsize/2);
                 */
             }
         }
 
         puzzle();
     }
+
+
+    void DecideRate()
+    {
+
+        switch(pattern)
+        {
+            case 1:
+
+                if (   i < Basics + size * 1 / 4
+                    || j < Basics + size * 1 / 4
+                    || i >= Basics + size
+                    || j >= Basics + size)
+                {
+                    rate[i, j] = 0.8f;
+                }
+                else
+                {
+                    rate[i, j] = 0.4f;
+                }
+                break;
+
+            case 2:
+                if (i < Basics + size * 1 / 4
+                    || j < Basics + size * 1 / 4
+                    || i >= Basics + size  
+                    || j >= Basics + size  )
+                {
+                    rate[i, j] = 0.4f;
+                }
+                else
+                {
+                    rate[i, j] = 0.8f;
+                }
+                break;
+
+            case 3:
+                if (i < Basics + size * 2 / 4
+                    || j < Basics + size * 2 / 4
+                    || i >= Basics +  size * 3 / 4
+                    || j >= Basics +  size * 3 / 4)
+                {
+                    rate[i, j] = 0.8f;
+                }
+                else
+                {
+                    rate[i, j] = 0.4f;
+                }
+                break;
+        }
+    }
+
+
     // Update is called once per frame
     void Update()
     {
@@ -162,30 +229,30 @@ public class manager : MonoBehaviour
         clear++;
     }
 
-    void move(int seti, int setj)
+    void move(int MaxTipi, int MaxTipj)
     {
 
 
         undo[undoCount] = new Vector2(i, j);
 
 
-        if (seti == 0)
+        if (MaxTipi == 0)
         {
-            if (tip[i, j + setj].iswall == true)
+            if (tip[i, j + MaxTipj].iswall == true)
                 return;
             tip[i, j].player(false);
-            j += setj;
+            j += MaxTipj;
             tip[i, j].Countpush(-1);
 
 
         }
         else
         {
-            if (tip[i + seti, j].iswall == true)
+            if (tip[i + MaxTipi, j].iswall == true)
                 return;
 
             tip[i, j].player(false);
-            i += seti;
+            i += MaxTipi;
             tip[i, j].Countpush(-1);
         }
 
@@ -214,9 +281,9 @@ public class manager : MonoBehaviour
 
     void Initialization()
     {
-        for (i = 0; i < set; i++)
+        for (i = 0; i < MaxTip; i++)
         {
-            for (j = 0; j < set; j++)
+            for (j = 0; j < MaxTip; j++)
             {
                 tip[i, j] = null;
             }
@@ -247,7 +314,7 @@ public class manager : MonoBehaviour
                 }
             }
 
-            ResetBool();
+            ReMaxTipBool();
 
         }
         RandomWalk();
@@ -270,7 +337,12 @@ public class manager : MonoBehaviour
 
     }
 
-    void ResetBool()
+    void TipValue()
+    {
+
+    }
+
+    void ReMaxTipBool()
     {
         for (int s = 0; s < 4; s++)
             t[s] = false;
@@ -314,7 +386,7 @@ public class manager : MonoBehaviour
 
             }
 
-            ResetBool();
+            ReMaxTipBool();
 
 
             var dir = Random.Range(0, dirCount);

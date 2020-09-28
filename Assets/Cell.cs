@@ -29,6 +29,14 @@ public class Cell : MonoBehaviour
         
     }
 
+    public void debag(float i)
+    {
+    
+        tm.text = "" + i;
+        tm.fontSize = 32;
+        iswall = false;
+    }
+
 
     public void Countpush(int i)
     {
