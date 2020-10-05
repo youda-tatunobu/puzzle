@@ -68,7 +68,7 @@ public class manager : MonoBehaviour
 
     void Awake()
     {
-      
+        return;
         part = cl.Split(',');
            
         startfrg = false;
@@ -320,11 +320,13 @@ public class manager : MonoBehaviour
     }
     int search()
     {
-
+        
 
         for (int nb = 0; nb < 4; nb++)
         {
-            if (tip[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]].iswall == false)
+            Debug.Log(i + Searchlocation[nb * 2]);
+            Debug.Log(j + Searchlocation[(nb * 2) + 1]);
+            if (tip[i + Searchlocation[nb * 2], j + Searchlocation[(nb * 2 )+ 1]].iswall == false)
             {
                 total = rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]];
                 t[nb] = true;
