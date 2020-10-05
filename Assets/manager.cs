@@ -1,8 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class manager : MonoBehaviour
 {
     const int MaxTip = 16;
+
+    //int[,] stepcount;
 
     [SerializeField]
     Cell masu;
@@ -29,7 +33,9 @@ public class manager : MonoBehaviour
     Cell[,] background = new Cell[MaxTip, MaxTip];
     Cell[,] tip = new Cell[MaxTip, MaxTip];
 
+   int[] Searchlocation = {0,1,  0,-1,  1,0,  -1,0 };
 
+    
 
     string cl = "c,l,e,a,r,!";
     string[] part;
@@ -54,31 +60,22 @@ public class manager : MonoBehaviour
     int Annoying = 0;
 
     int[] size = { 4, 6, 8 };
-    int[] data = { 1, 1, 2 };
+    int[] data = { 1, 2, 2 };
     int level=1;
 
-    double total = 0;
+    float total = 0.0f;
 
-    double[] debug = { 0.8,0.8,0.4,0.4 };
-
-
-    // Start is called before the first frame update
 
     void Awake()
     {
-        for(int a=0;a<4;a++)
-        {
-            total += debug[a];
-        }
-        var test= Random.value * total;
-        Debug.Log(test);
+      
         part = cl.Split(',');
-
+           
         startfrg = false;
-
-        
+           
+           
         pattern= Random.Range(1, 4);
-        Annoying = Random.Range(size[level] - 4, size[level] - 2);
+        Annoying = 6;
         Basics = ((MaxTip - size[level]) / 2);
         
         for (i = 0; i < MaxTip; i++)
@@ -107,7 +104,7 @@ public class manager : MonoBehaviour
                 
             }
         }
-        return;
+        
         puzzle();
     }
 
@@ -124,11 +121,11 @@ public class manager : MonoBehaviour
                     || i >= Basics + size[level]- data[level]
                     || j >= Basics + size[level]- data[level])
                 {
-                    rate[i, j] = 0.8f;
+                    rate[i, j] = 0.9f;
                 }
                 else
                 {
-                    rate[i, j] = 0.4f;
+                    rate[i, j] = 0.3f;
                 }
                 break;
 
@@ -139,11 +136,11 @@ public class manager : MonoBehaviour
                     || i >= Basics + size[level] - data[level]
                     || j >= Basics + size[level] - data[level])
                 {
-                    rate[i, j] = 0.4f;
+                    rate[i, j] = 0.3f;
                 }
                 else
                 {
-                    rate[i, j] = 0.8f;
+                    rate[i, j] = 0.9f;
                 }
                 break;
 
@@ -154,15 +151,15 @@ public class manager : MonoBehaviour
                     || j < Basics + data[level]
                     && j >= Basics + size[level] - data[level])
                 {
-                    rate[i, j] = 0.4f;
+                    rate[i, j] = 0.3f;
                 }
                 else
                 {
-                    rate[i, j] = 0.8f;
+                    rate[i, j] = 0.9f;
                 }
                 break;
         }
-        tip[i,j].debug(rate[i, j]);
+        
     }
 
 
@@ -209,8 +206,6 @@ public class manager : MonoBehaviour
             move(-1, 0);
         }
 
-
-
     }
 
     void Clear()
@@ -233,33 +228,33 @@ public class manager : MonoBehaviour
         clear=1000;
     }
 
-    void move(int MaxTipi, int MaxTipj)
+    void move(int seti,int setj)
     {
 
 
-        undo[undoCount] = new Vector2(i, j);
+        undo[undoCount] = new Vector2(i,j);
 
 
-        if (MaxTipi == 0)
+        if (seti == 0)
         {
-            if (tip[i, j + MaxTipj].iswall == true)
+            if (tip[i, j + setj].iswall == true)
                 return;
             tip[i, j].player(false);
-            j += MaxTipj;
+            j += setj;
             tip[i, j].Countpush(-1);
 
 
         }
         else
         {
-            if (tip[i + MaxTipi, j].iswall == true)
+            if (tip[i + seti, j].iswall == true)
                 return;
 
             tip[i, j].player(false);
-            i += MaxTipi;
+            i += seti;
             tip[i, j].Countpush(-1);
         }
-
+        
         tip[(int)undo[undoCount].x, (int)undo[undoCount].y].CheckZero();
         tip[i, j].player(true);
 
@@ -318,51 +313,53 @@ public class manager : MonoBehaviour
                 }
             }
 
-            ReMaxTipBool();
+            ResetBool();
 
         }
         RandomWalk();
     }
-    void search()
+    int search()
     {
 
-        if (tip[i, j + 1].iswall == true)
+
+        for (int nb = 0; nb < 4; nb++)
         {
-            total= rate[i, j + 1];
-            t[0] = true;
+            if (tip[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]].iswall == false)
+            {
+                total = rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]];
+                t[nb] = true;
+            }
         }
 
+        float randomPoint = Random.value * total;
 
-        if (tip[i, j - 1].iswall == true)
+        for (int nb = 0; nb < 4; nb++)
         {
-            total = rate[i, j - 1];
-            t[1] = true;
+            if (t[nb] == true)
+            {
+
+                if (randomPoint < rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]])
+                {
+                    Debug.Log("yes"+randomPoint);
+                    return nb;
+                }
+                else
+                {
+                    randomPoint -= rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]];
+                }
+            }
         }
-
-
-        if (tip[i + 1, j].iswall == true)
-        {
-            total = rate[i + 1, j];
-            t[2] = true;
-        }
-
-
-        if (tip[i - 1, j].iswall == true)
-        {
-            total = rate[i - 1, j];
-            t[3] = true;
-        }
-
-
-
+        Debug.Log("のおおおお"+randomPoint);
+        return 3;
     }
+    
 
     void TipValue()
     {
 
     }
 
-    void ReMaxTipBool()
+    void ResetBool()
     {
         for (int s = 0; s < 4; s++)
             t[s] = false;
@@ -370,8 +367,8 @@ public class manager : MonoBehaviour
     }
     void RandomWalk()
     {
-        
-        walk = Random.Range((int)Mathf.Pow(size[level] - 2, 2), (int)Mathf.Pow(size[level] - 2, 3) / (size[level] / 2));
+
+        walk = 56;
 
         while (true)
         {
@@ -391,46 +388,34 @@ public class manager : MonoBehaviour
 
         for (int f = 0; f < walk; f++)
         {
-
-
-            search();
-            for (int s = 0; s < 4; s++)
-            {
-
-                if (t[s] == false)
-                {
-
-                    dirs[dirCount] = s;
-                    dirCount++;
-                }
-
-            }
-
-            ReMaxTipBool();
-
-
-            var dir = Random.Range(0, dirCount);
-            //Debug.Log(i + "," + j + "," + dirs[dir]);
-            switch (dirs[dir])
+            
+            int dir = search();
+            Debug.Log(dir);
+            switch (dir)
             {
                 case 0:
 
                     tip[i, j].Countpush(1);
+                    rate[i, j] -= 0.3f;
                     j++;
                     break;
                 case 1:
 
                     tip[i, j].Countpush(1);
+                    rate[i, j] -= 0.3f;
                     j--;
                     break;
                 case 2:
 
                     tip[i, j].Countpush(1);
+                    rate[i, j] -= 0.3f;
                     i++;
                     break;
                 case 3:
-
+                   
+                    
                     tip[i, j].Countpush(1);
+                    rate[i, j] -= 0.3f;
                     i--;
                     break;
             }
@@ -456,10 +441,11 @@ public class manager : MonoBehaviour
             }
         }
     }
+}
     ///
     //Debug.Log(size[level]);
     //Debug.Log(Annoying);
     //Debug.Log(dirs);
     ///*//*/
     ///
-}
+

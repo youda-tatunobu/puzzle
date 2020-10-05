@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Cell : MonoBehaviour
 {
-    int stepcount=0;
+    int stepcount;
     [SerializeField]
     int size;
 
@@ -28,15 +28,6 @@ public class Cell : MonoBehaviour
     {
         
     }
-
-    public void debug(float i)
-    {
-    
-        tm.text = "" + i*10;
-        tm.fontSize = 32;
-        iswall = false;
-    }
-
 
     public void Countpush(int i)
     {

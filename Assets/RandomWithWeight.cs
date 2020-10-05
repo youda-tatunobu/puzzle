@@ -23,7 +23,7 @@ public class RandomWithWeight : MonoBehaviour
 
 		// ドロップアイテムの抽選
 		int itemId = Choose();
-
+		
 		// アイテムIDに応じたメッセージ出力
 		if (itemId != 0)
 		{
@@ -68,10 +68,10 @@ public class RandomWithWeight : MonoBehaviour
 		// Random.valueでは0から1までのfloat値を返すので
 		// そこにドロップ率の合計を掛ける
 		float randomPoint = Random.value * total;
-
 		// randomPointの位置に該当するキーを返す
 		foreach (KeyValuePair<int, float> elem in itemDropDict)
 		{
+			
 			if (randomPoint < elem.Value)
 			{
 				return elem.Key;
