@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class Cell : MonoBehaviour
 {
-    int stepcount;
     [SerializeField]
     int size;
 
@@ -31,22 +30,12 @@ public class Cell : MonoBehaviour
 
     public void Countpush(int i)
     {
-        stepcount+=i;
-        tm.text = ""+stepcount;
+        
+        tm.text = ""+i;
         tm.fontSize = 32;
         iswall = false;
 
     }
-
-    public void CheckZero()
-    {
-        
-        if(stepcount==0)
-        {
-            wall(true);
-        }
-    }
-
 
     public void wall(bool i)
     {
@@ -84,8 +73,5 @@ public class Cell : MonoBehaviour
         transform.localPosition = new Vector2(i, j);
     }
 
-    public void Pull(int set)
-    {
-        stepcount = set;
-    }
+
 }
