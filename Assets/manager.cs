@@ -1,10 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 
 public class manager : MonoBehaviour
 {
-    const int MaxTip = 16;
+    const int MaxTip = 14;
+
+    int test1=0;
+
+    int test2=0;
 
     int[,] stepcount = new int[MaxTip, MaxTip];
 
@@ -61,10 +67,10 @@ public class manager : MonoBehaviour
 
     int[] size = { 4, 6, 8 };
     int[] data = { 1, 2, 2 };
-    int level = 1;
+    int level = 2;
 
     float total = 0.0f;
-
+long seed;
 
     void Awake()
     {
@@ -74,8 +80,9 @@ public class manager : MonoBehaviour
         startfrg = false;
 
 
-        pattern = Random.Range(1, 4);
-        Annoying = 6;
+        pattern = UnityEngine.Random.Range(1, 4);
+        int  seed=(int)DateTime.Now.Ticks;
+        UnityEngine.Random.InitState(seed);
         Basics = ((MaxTip - size[level]) / 2);
 
         for (i = 0; i < MaxTip; i++)
@@ -91,7 +98,7 @@ public class manager : MonoBehaviour
                     || i >= Basics + size[level]
                     || j >= Basics + size[level])
                 {
-                    tip[i, j].wall(true);
+                    tip[i, j].wall();
                 }
                 else
                 {
@@ -101,9 +108,10 @@ public class manager : MonoBehaviour
 
                 tip[i, j].Placement(i * UIsize - (MaxTip * UIsize / 2) + 2 * UIsize, j * UIsize - (MaxTip * UIsize / 2) + UIsize / 2);
 
-
+            //tip[i,j].test(rate[i,j]);
             }
         }
+        
 
         puzzle();
     }
@@ -124,11 +132,11 @@ public class manager : MonoBehaviour
                     || i >= Basics + size[level] - data[level]
                     || j >= Basics + size[level] - data[level])
                 {
-                    rate[i, j] = 0.9f;
+                    rate[i, j] = UnityEngine.Random.Range(0.850f,0.960f);
                 }
                 else
                 {
-                    rate[i, j] = 0.3f;
+                    rate[i, j] = UnityEngine.Random.Range(0.250f,0.360f);
                 }
                 break;
 
@@ -139,11 +147,11 @@ public class manager : MonoBehaviour
                     || i >= Basics + size[level] - data[level]
                     || j >= Basics + size[level] - data[level])
                 {
-                    rate[i, j] = 0.3f;
+                    rate[i, j] = UnityEngine.Random.Range(0.250f,0.360f);
                 }
                 else
                 {
-                    rate[i, j] = 0.9f;
+                    rate[i, j] = UnityEngine.Random.Range(0.850f,0.960f);
                 }
                 break;
 
@@ -154,11 +162,11 @@ public class manager : MonoBehaviour
                     || j < Basics + data[level]
                     && j >= Basics + size[level] - data[level])
                 {
-                    rate[i, j] = 0.3f;
+                    rate[i, j] = UnityEngine.Random.Range(0.250f,0.360f);
                 }
                 else
                 {
-                    rate[i, j] = 0.9f;
+                    rate[i, j] = UnityEngine.Random.Range(0.850f,0.960f);
                 }
                 break;
         }
@@ -217,7 +225,7 @@ public class manager : MonoBehaviour
         pe.TimerStop();
 
         tip[i, j].player(false);
-        tip[i, j].wall(true);
+        tip[i, j].wall();
         i = 5;
         j = 11;
 
@@ -233,7 +241,7 @@ public class manager : MonoBehaviour
 
     void move(int seti, int setj)
     {
-
+       
 
         undo[undoCount] = new Vector2(i, j);
 
@@ -271,6 +279,7 @@ public class manager : MonoBehaviour
     {
         undoCount--;
         tip[i, j].player(false);
+        stepcount[i, j]++;
         tip[i, j].Countpush(1);
 
 
@@ -294,35 +303,7 @@ public class manager : MonoBehaviour
         }
     }
 
-    void puzzle()
-    {
 
-        for (int f = 0; f < Annoying; f++)
-        {
-
-            i = Random.Range(Basics, Basics + size[level]);
-            j = Random.Range(Basics, Basics + size[level]);
-
-            if (tip[i, j].iswall == false)
-            {
-
-
-                for (int s = 0; s < 4; s++)
-                {
-
-                    if (t[s] == true)
-                    {
-                        break;
-                    }
-                    tip[i, j].wall(true);
-                }
-            }
-
-            ResetBool();
-
-        }
-        RandomWalk();
-    }
 
     int Search()
     {
@@ -332,60 +313,67 @@ public class manager : MonoBehaviour
 
         for (int nb = 0; nb < 4; nb++)
         {
-
+            if(tip[i,j].iswall==false)
             total = rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]];
-
         }
 
-        float randomPoint = Random.value * total;
+        float randomPoint = UnityEngine.Random.value * total;
 
         for (int nb = 0; nb < 4; nb++)
         {
-
-            if (randomPoint < rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]])
+            if(rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]]>0)
             {
-                return nb;
+            
+                if(randomPoint < rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]])
+                {
+                    //Debug.Log("total"+total+" , "+"rate"+rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]]);
+                    //Debug.Log("nb"+nb);
+                    test1++;
+                    return nb;
+                }
+                else
+                {
+                    randomPoint -= rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]];
+                }
             }
-            else
-            {
-                randomPoint -= rate[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]];
-            }
-        
         }
 
         for (int nb = 0; nb < 4; nb++)
         {
             if (tip[i + Searchlocation[nb * 2], j + Searchlocation[nb * 2 + 1]].iswall == false)
             {
+                test2++;
                 return nb;
             }
         }
         return 0;
     }
 
-    void ResetBool()
-    {
-        for (int s = 0; s < 4; s++)
-            t[s] = false;
-
-    }
-    void RandomWalk()
+    
+    void puzzle()
     {
 
-        walk = 56;
+        walk = size[level]*size[level];
 
         while (true)
         {
-            start_i = Random.Range(Basics, Basics + size[level] - 1);
-            start_j = Random.Range(Basics, Basics + size[level] - 1);
+            
+            start_i = UnityEngine.Random.Range(Basics, Basics + size[level] );
+
+            start_j = UnityEngine.Random.Range(Basics, Basics + size[level] );
 
             if (tip[start_i, start_j].iswall == false)
                 break;
 
         }
+        
 
         i = start_i;
         j = start_j;
+        Debug.Log(Basics);
+        Debug.Log(i);
+        Debug.Log(j);
+        Debug.Log(Basics + size[level]);
 
 
 
@@ -394,7 +382,7 @@ public class manager : MonoBehaviour
         {
             
             int dir = Search();
-            Debug.Log(dir);
+            //Debug.Log(dir);
             switch (dir)
             {
                 case 0:
@@ -428,9 +416,11 @@ public class manager : MonoBehaviour
         undo[undoCount] = new Vector2(i, j);
         undoCount++;
 
-        wall();
         tip[i, j].player(true);
-        tip[i, j].Countpush(0);
+        wall();
+        
+        if(stepcount[i, j]==0)
+            tip[i, j].Countpush(0);
         startfrg = true;
     }
 
@@ -447,10 +437,10 @@ public class manager : MonoBehaviour
 
     public void CheckZero(int dataA ,int dataB)
     {
-
+        
         if (stepcount[dataA,dataB] == 0)
         {
-            tip[i, j].wall(true);
+            tip[dataA, dataB].wall();
         }
     }
 

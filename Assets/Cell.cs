@@ -7,7 +7,10 @@ using UnityEngine.UI;
 public class Cell : MonoBehaviour
 {
     [SerializeField]
-    int size;
+    int WallSize;
+
+    [SerializeField]
+    int UISize;
 
     public bool iswall=false;
     
@@ -21,6 +24,12 @@ public class Cell : MonoBehaviour
         tm = GetComponentInChildren<TMPro.TextMeshProUGUI>();
         im = transform.GetComponent<Image>();
     }
+    public void test(float i)
+    {
+        tm.text = ""+i;
+        tm.fontSize = UISize-8;
+        iswall = false;
+    }
 
     // Update is called once per frame
     void Update()
@@ -32,16 +41,16 @@ public class Cell : MonoBehaviour
     {
         
         tm.text = ""+i;
-        tm.fontSize = 32;
+        tm.fontSize = UISize-8;
         iswall = false;
 
     }
 
-    public void wall(bool i)
+    public void wall()
     {
-        iswall = i;
+        iswall = true;
         tm.text = "■";
-        tm.fontSize = size;
+        tm.fontSize = WallSize;
         
         
         
@@ -52,7 +61,7 @@ public class Cell : MonoBehaviour
     public void Clear(string c)
     {
         tm.text = "" + c;
-        tm.fontSize = 32;
+        tm.fontSize = UISize-8;
     }
 
     public void player(bool s)
