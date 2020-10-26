@@ -6,7 +6,7 @@ using System;
 
 public class manager : MonoBehaviour
 {
-    const int MaxTip = 14;
+    const int MaxTip = 10;
 
     int test1=0;
 
@@ -226,8 +226,8 @@ long seed;
 
         tip[i, j].player(false);
         tip[i, j].wall();
-        i = 5;
-        j = 11;
+        i = 2;
+        j = 8;
 
 
         for (int s = 0; s < hoge; s++)
@@ -280,14 +280,14 @@ long seed;
         undoCount--;
         tip[i, j].player(false);
         stepcount[i, j]++;
-        tip[i, j].Countpush(1);
+        tip[i, j].Countpush(stepcount[i, j]);
 
 
         i = (int)undo[undoCount].x;
         j = (int)undo[undoCount].y;
 
         tip[i, j].player(true);
-        tip[i, j].Countpush(0);
+        tip[i, j].Countpush(stepcount[i, j]);
 
         clear--;
     }
