@@ -27,8 +27,8 @@ public class manager : MonoBehaviour
     [SerializeField]
     int clear = 0;
 
-    [SerializeField]
-    int walk;
+    
+    
 
     [SerializeField]
     int UIsize;
@@ -66,8 +66,9 @@ public class manager : MonoBehaviour
     int Annoying = 0;
 
     int[] size = { 4, 6, 8 };
-    int[] data = { 1, 2, 2 };
-    int level = 2;
+    int[] ratedata = { 1, 2, 2 };
+    int[] walk= { 20, 40, 60 };
+    int level = 0;
 
     float total = 0.0f;
 long seed;
@@ -76,10 +77,9 @@ long seed;
     {
 
         part = cl.Split(',');
-
+        //updateを止める
         startfrg = false;
-
-
+        //
         pattern = UnityEngine.Random.Range(1, 4);
         int  seed=(int)DateTime.Now.Ticks;
         UnityEngine.Random.InitState(seed);
@@ -127,46 +127,46 @@ long seed;
         switch (pattern)
         {
             case 1:
-                if (i < Basics + data[level]
-                    || j < Basics + data[level]
-                    || i >= Basics + size[level] - data[level]
-                    || j >= Basics + size[level] - data[level])
+                if (i < Basics + ratedata[level]
+                    || j < Basics + ratedata[level]
+                    || i >= Basics + size[level] - ratedata[level]
+                    || j >= Basics + size[level] - ratedata[level])
                 {
-                    rate[i, j] = UnityEngine.Random.Range(0.850f,0.960f);
+                    rate[i, j] = UnityEngine.Random.Range(0.500f,1.00f);
                 }
                 else
                 {
-                    rate[i, j] = UnityEngine.Random.Range(0.250f,0.360f);
+                    rate[i, j] = UnityEngine.Random.Range(0.00f,0.500f);
                 }
                 break;
 
             case 2:
 
-                if (i < Basics + data[level]
-                    || j < Basics + data[level]
-                    || i >= Basics + size[level] - data[level]
-                    || j >= Basics + size[level] - data[level])
+                if (i < Basics + ratedata[level]
+                    || j < Basics + ratedata[level]
+                    || i >= Basics + size[level] - ratedata[level]
+                    || j >= Basics + size[level] - ratedata[level])
                 {
-                    rate[i, j] = UnityEngine.Random.Range(0.250f,0.360f);
+                    rate[i, j] = UnityEngine.Random.Range(0.00f, 0.500f);
                 }
                 else
                 {
-                    rate[i, j] = UnityEngine.Random.Range(0.850f,0.960f);
+                    rate[i, j] = UnityEngine.Random.Range(0.500f, 1.00f);
                 }
                 break;
 
             case 3:
 
-                if (i < Basics + data[level]
-                    || i >= Basics + size[level] - data[level]
-                    || j < Basics + data[level]
-                    && j >= Basics + size[level] - data[level])
+                if (i < Basics + ratedata[level]
+                    || i >= Basics + size[level] - ratedata[level]
+                    || j < Basics + ratedata[level]
+                    && j >= Basics + size[level] - ratedata[level])
                 {
-                    rate[i, j] = UnityEngine.Random.Range(0.250f,0.360f);
+                    rate[i, j] = UnityEngine.Random.Range(0.00f, 0.500f);
                 }
                 else
                 {
-                    rate[i, j] = UnityEngine.Random.Range(0.850f,0.960f);
+                    rate[i, j] = UnityEngine.Random.Range(0.500f, 1.00f);
                 }
                 break;
         }
@@ -192,7 +192,7 @@ long seed;
             }
         }
 
-        if (clear == walk)
+        if (clear == walk[level])
         {
             Clear();
         }
@@ -353,8 +353,6 @@ long seed;
     void puzzle()
     {
 
-        walk = size[level]*size[level];
-
         while (true)
         {
             
@@ -370,15 +368,12 @@ long seed;
 
         i = start_i;
         j = start_j;
-        Debug.Log(Basics);
-        Debug.Log(i);
-        Debug.Log(j);
-        Debug.Log(Basics + size[level]);
+  
 
 
 
 
-        for (int f = 0; f < walk; f++)
+        for (int f = 0; f < walk[level]; f++)
         {
             
             int dir = Search();
@@ -388,25 +383,25 @@ long seed;
                 case 0:
                     stepcount[i, j]++;
                     tip[i, j].Countpush(stepcount[i,j]);
-                    rate[i, j] -= 0.3f;
+                    rate[i, j] -= 0.250f;
                     j++;
                     break;
                 case 1:
                     stepcount[i, j]++;
                     tip[i, j].Countpush(stepcount[i, j]);
-                    rate[i, j] -= 0.3f;
+                    rate[i, j] -= 0.250f;
                     j--;
                     break;
                 case 2:
                     stepcount[i, j]++;
                     tip[i, j].Countpush(stepcount[i, j]);
-                    rate[i, j] -= 0.3f;
+                    rate[i, j] -= 0.250f;
                     i++;
                     break;
                 case 3:
                     stepcount[i, j]++;
                     tip[i, j].Countpush(stepcount[i, j]);
-                    rate[i, j] -= 0.3f;
+                    rate[i, j] -= 0.250f;
                     i--;
                     break;
             }
