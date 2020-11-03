@@ -67,7 +67,7 @@ public class manager : MonoBehaviour
 
     int[] size = { 4, 6, 8 };
     int[] ratedata = { 1, 2, 2 };
-    int[] walk= { 20, 40, 60 };
+    int[] walk= { 25 ,50, 70};
     int level = 0;
 
     float total = 0.0f;
@@ -105,7 +105,7 @@ long seed;
                     DecideRate();
                 }
 
-
+                //タイルの場所調整
                 tip[i, j].Placement(i * UIsize - (MaxTip * UIsize / 2) + 2 * UIsize, j * UIsize - (MaxTip * UIsize / 2) + UIsize / 2);
 
             //tip[i,j].test(rate[i,j]);
@@ -389,19 +389,19 @@ long seed;
                 case 1:
                     stepcount[i, j]++;
                     tip[i, j].Countpush(stepcount[i, j]);
-                    rate[i, j] -= 0.250f;
+                    rate[i, j] -= 0.350f;
                     j--;
                     break;
                 case 2:
                     stepcount[i, j]++;
                     tip[i, j].Countpush(stepcount[i, j]);
-                    rate[i, j] -= 0.250f;
+                    rate[i, j] -= 0.350f;
                     i++;
                     break;
                 case 3:
                     stepcount[i, j]++;
                     tip[i, j].Countpush(stepcount[i, j]);
-                    rate[i, j] -= 0.250f;
+                    rate[i, j] -= 0.350f;
                     i--;
                     break;
             }
